@@ -10,11 +10,9 @@ function App() {
   const navigate = useNavigate();
 
   const handleSearch = async () => {
-    try {
-      console.log("🔐 Search button has been clicked");
+    try { 
       const res = await fetch(`/api/recipes?ingredients=${ingredientInput}`);
       const recipeData = await res.json();
-      console.log("✅ Fetched recipes", recipeData);
       setRecipes(recipeData);
     } catch (err) {
       console.log("❌ Error fetching recipes:", err);
@@ -25,7 +23,7 @@ function App() {
     try {
       const res = await fetch(`/api/recipes/${id}`);
       const detailData = await res.json();
-      console.log("🍽️ recipe details:", detailData);
+      // console.log("🍽️ recipe details:", detailData);
     } catch (err) {
       console.error("❌ Error fetching recipe details:", err);
     }
@@ -39,7 +37,7 @@ function App() {
         body: JSON.stringify(recipe),
       });
       const savedRecipeData = await res.json();
-      console.log("✅ Saved recipe:", savedRecipeData);
+      // console.log("✅ Saved recipe:", savedRecipeData);
     } catch (err) {
       console.error("❌ Error saving recipe:", err);
     }
