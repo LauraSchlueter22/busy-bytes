@@ -13,14 +13,12 @@ const RecipeDetails = () => {
       try {
         const res = await fetch(`/api/recipes/${id}`);
         const fullRecipeDetails = await res.json();
-        console.log("✅ Fetched full recipe details", fullRecipeDetails);
         setViewFullRecipe(fullRecipeDetails);
       } catch (err) {
         console.error("❌ Error fetching full recipes:", err);
       }
     };
     fetchFullRecipeDetails();
-    // add an id dependency array for useEffect
   }, [id]);
 
   const handleSaveRecipe = async () => {
@@ -30,19 +28,17 @@ const RecipeDetails = () => {
         title: viewfullRecipe.title,
         ingredients: viewfullRecipe.ingredients,
       };
-      console.log("✅ Recipe being saved:", recipeToSave);
       const res = await fetch("/api/recipe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(recipeToSave),
       });
       const savedData = await res.json();
-      console.log("✅ Recipe saved:", savedData);
     } catch (err) {
       console.error("❌ Error saving recipe:", err);
     }
   };
-  // in this return I want to try using the terinary operator
+  
   return (
     <>
       <button className="home-button" onClick={() => navigate("/")}>
