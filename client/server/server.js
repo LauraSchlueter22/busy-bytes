@@ -6,6 +6,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
+// I need to come back and reorganize files.
+// mainly backend files
+
 const app = express();
 const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
