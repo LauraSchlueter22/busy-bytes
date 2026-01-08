@@ -38,4 +38,9 @@ app.listen(PORT, () => {
   console.log(`👂🏼 Server listening on port: ${PORT}.`);
 });
 
+console.log(
+  `🫶🏼 API key loaded:`,
+  process.env.SPOONACULAR_API_KEY ? "yes" : "No"
+);
+
 export default app;
