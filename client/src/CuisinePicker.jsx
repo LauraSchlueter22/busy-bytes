@@ -11,7 +11,14 @@ export default function CuisinePicker() {
     "Japanese",
   ];
 
-  return <h2>{cuisineChoices}</h2>;
+  return (
+  <h2>{cuisineChoices}</h2>;
+  <ul>
+    <li>
+      Take a second and look around!
+    </li>
+  </ul>
+  ) 
 }
 
 // here we will be the functionality
