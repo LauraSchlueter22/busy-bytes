@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function CuisinePicker() {
+  const [selectedCuisine, setSelectedCuisine] = useState(null);
+
   const cuisineChoices = [
     "Italian",
     "American",
@@ -12,7 +16,7 @@ export default function CuisinePicker() {
   ];
 
   return (
-  <h2>{cuisineChoices}</h2>;
+  <>{cuisineChoices.map((cuisine) => {return(cuisine)})}</>;
   <ul>
     <li>
       Take a second and look around!
