@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "A recipe app that helps busy people cook with ingredients they already have",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "html-react-parser": "^5.2.6",
