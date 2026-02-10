@@ -141,3 +141,27 @@ export const getSavedRecipes = async (req, res) => {
         });
     }
 };
+
+export const deleteRecipe (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedRecipe = await Recipe.findByIdAndDelete(id);
+
+        if(!deletedRecipe) {
+            return res.status(400).json({
+                error: 'Recipe not found'
+            });
+        }
+
+        res.json({
+            message: 'Recipe deleted successfully',
+            recipe: deletedRecipe
+        });
+
+    } catch (error) {
+        console.error('Error deleting recipe', error);
+        res.status(500).json({
+            error: 'Failed to delete recipe'
+        });
+    }
+};
