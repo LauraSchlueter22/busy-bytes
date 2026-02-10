@@ -127,4 +127,17 @@ export const saveRecipe = async (req, res) => {
             error: 'Failed to save recipe ❌'
         });
     }
-}
+};
+
+export const getSavedRecipes = async (req, res) => {
+    try {
+        const recipes = await Recipe.find({}).sort({ createdAt: -1 });
+        res.json(recipes);
+
+    } catch (error) {
+        console.error('Error fetching saved recipes:', error);
+        res.status(500).json({
+            error: 'Failed to fetch recipes'
+        });
+    }
+};
