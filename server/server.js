@@ -23,6 +23,12 @@ mongoose
   .then(() => console.log("🟢 connected to MongoDB"))
   .catch((err) => console.error("🛑 MongoDB connection error:", err));
 
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
+});
+
+
 app.use("/api/ai", aiRoutes);
 
 app.use((req, res) => res.status(404).send("☹️ This page does not exist"));

@@ -140,7 +140,7 @@ export const saveRecipe = async (req, res) => {
 
     const savedRecipe = await newRecipe.save();
     res.status(200).json({
-      message: "Recipe daved successfully ✅",
+      message: "Recipe saved successfully ✅",
       recipe: savedRecipe,
     });
   } catch (error) {
