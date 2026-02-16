@@ -13,6 +13,6 @@ router.get("/recipes", generateRecipes);
 router.get("/recipes/saved", getSavedRecipes);
 router.post("/recipe/detailed", generateFullRecipe);
 router.post("/recipe/save", saveRecipe);
-router.delete("/recipe/:id", deleteRecipe);
+router.delete("/recipes/:id", deleteRecipe);
 
 export default router;
