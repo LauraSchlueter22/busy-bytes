@@ -2,19 +2,19 @@ import mongoose from "mongoose";
 
 const recipeSchema = new mongoose.Schema({
   title: {
-    title: String,
+    type: String,
     required: true,
   },
 
   description: String,
 
-  ingredents: { 
-    igredents: [String],
+  ingredients: {
+    type: [String],
     required: true,
   },
 
   instructions: {
-    instructions: [String],
+    type: [String],
     required: true,
   },
 
@@ -23,7 +23,7 @@ const recipeSchema = new mongoose.Schema({
   servings: Number,
 });
 
-recipeSchema.index({ title: "text", ingredents: "text" });
+recipeSchema.index({ title: "text", ingredients: "text" });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
