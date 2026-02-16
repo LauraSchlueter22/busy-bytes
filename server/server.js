@@ -1,10 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import aiRoutes from "./routes/aiRoutes.js";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
 
 // I need to come back and reorganize files.
 // mainly backend files
@@ -35,7 +36,9 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`👂🏼 Server listening on port: ${PORT}.`);
-  console.log(`🤖 Anthropic API key loaded: ${process.env.ANTHROPIC_API_KEY ? "✅" : "❌"}`);
+  console.log(
+    `🤖 Anthropic API key loaded: ${process.env.ANTHROPIC_API_KEY ? "✅" : "❌"}`,
+  );
 });
 
 export default app;

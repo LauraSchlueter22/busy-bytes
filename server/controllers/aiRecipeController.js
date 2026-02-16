@@ -1,9 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import Recipe from "../models/recipeModel.js";
 
-const anthopic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+let anthropic;
+function getAnthropicClient() {
+  if (!anthropic) {
+    anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+  }
+  return anthropic;
+}
 
 export const generateRecipes = async (req, res) => {
   try {
@@ -14,8 +20,8 @@ export const generateRecipes = async (req, res) => {
       });
     }
 
-    const message = await anthopic.messages.create({
-      model: "claude-4-sonnet-20250514",
+    const message = await getAnthropicClient().messages.create({
+      model: "claude-sonnet-4-20250514",
       max_tokens: 2000,
 
       messages: [
@@ -33,7 +39,7 @@ return ONLY valid JSON in this exact format, no other text:
   "recipes": [
   {
     "title": "Recipe Name",
-    "description: "Brief description",
+    "description": "Brief description",
     "cookingTime": "30 minutes"
    }
   ]
@@ -43,7 +49,12 @@ return ONLY valid JSON in this exact format, no other text:
     });
 
     const responseText = message.content[0].text;
-    const recipeData = JSON.parse(responseText);
+    const cleanText = responseText
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+
+    const recipeData = JSON.parse(cleanText);
     res.json(recipeData);
   } catch (error) {
     console.error("Error generating recipes:", error);
@@ -57,12 +68,9 @@ export const generateFullRecipe = async (req, res) => {
   try {
     const { ingredients, recipeName, dietaryRestrictions } = req.body;
     if (!ingredients || !recipeName) {
-      return (
-        res.status(400),
-        json({
-          error: "Please provide ingredients and recipe name",
-        })
-      );
+      return res.status(400).json({
+        error: "Please provide ingredients and recipe name",
+      });
     }
     let prompt = `Create a detailed recipe for "${recipeName}" using these ingredients: ${ingredients}.`;
 
@@ -81,8 +89,8 @@ export const generateFullRecipe = async (req, res) => {
 
         return ONLY valid JSON, no other text`;
 
-    const message = await anthopic.messages.create({
-      model: "claude-4-sonnet-20250514",
+    const message = await getAnthropicClient().messages.create({
+      model: "claude-sonnet-4-20250514",
       max_tokens: 4000,
       messages: [
         {
@@ -93,7 +101,12 @@ export const generateFullRecipe = async (req, res) => {
     });
 
     const responseText = message.content[0].text;
-    const recipeData = JSON.parse(responseText);
+    const cleanText = responseText
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+
+    const recipeData = JSON.parse(cleanText);
     res.json(recipeData);
   } catch (error) {
     console.error("Error generating full recipe details:", error);
@@ -109,7 +122,7 @@ export const saveRecipe = async (req, res) => {
     if (
       !recipeData.title ||
       !recipeData.ingredients ||
-      !recipeData.instructuons
+      !recipeData.instructions
     ) {
       return res.status(400).json({
         error: "Missing required recipe fields",
