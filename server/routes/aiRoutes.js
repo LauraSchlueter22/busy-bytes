@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/recipes", generateRecipes);
 router.get("/recipes/saved", getSavedRecipes);
-router.get("/recipes/detailed", generateFullRecipe);
+router.post("/recipe/detailed", generateFullRecipe);
 router.post("/recipe/save", saveRecipe);
 router.delete("/recipe/:id", deleteRecipe);
 
