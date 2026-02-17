@@ -5,6 +5,8 @@ function Home() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   const searchRecipes = async () => {
     if (!ingredients.trim()) {
@@ -16,7 +18,7 @@ function Home() {
 
     try {
       const response = await fetch(
-        "/api/ai/recipes?ingredients=${encodedURIComponent(ingredients)}",
+        `/api/ai/recipes?ingredients=${encodeURIComponent(ingredients)}`,
       );
       const data = await response.json();
 
@@ -32,9 +34,53 @@ function Home() {
       setLoading(false);
     }
   };
+
+  const getDetailedRecipe = async (recipe) => {
+    setDetailLoading(true);
+    setSelectedRecipe(null);
+
+    try {
+      const response = await fetch("/api/ai/recipe/detailed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ingredients: ingredients,
+          recipeName: recipe.title,
+        }),
+      });
+
+      const data = await response.json();
+      setSelectedRecipe(data);
+    } catch (err) {
+      setError("Failed to get recipe details. Please try again.");
+      console.error(err);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
+  const saveRecipe = async (recipe) => {
+    try {
+      const response = await fetch("/api/ai/recipe/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipe),
+      });
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+      } else {
+        alert("Recipe saved successfully! ✅");
+      }
+    } catch (err) {
+      setError("Failed to save recipe.");
+      console.error(err);
+    }
+  };
+
   return (
     <div className="home-page">
-      <h1> 🍛 Find Recipes from Your Ingredients</h1>
+      <h1> You provide the Ingredients- We got the recipes 🍛</h1>
       <div className="search-section">
         <input
           type="text"
@@ -53,17 +99,80 @@ function Home() {
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
-      <div className="recipes-grid">
-        {recipes.map((recipe, index) => {
-          <div key={index} className="recipe-card">
-            <h3>{recipe.title}</h3>
-            <p>{recipe.description}</p>
-            <div className="recipe-meta">
-              <span>⏱️ {recipe.cookingTime}</span>
+
+      {!selectedRecipe && (
+        <div className="recipes-grid">
+          {recipes.map((recipe, index) => (
+            <div
+              key={index}
+              className="recipe-card"
+              onClick={() => getDetailedRecipe(recipe)}
+            >
+              <h3>{recipe.title}</h3>
+              <p>{recipe.description}</p>
+              <div className="recipe-meta">
+                <span>⏱️ {recipe.cookingTime}</span>
+              </div>
+              <p className="click-hint">Click for full recipe! </p>
             </div>
-          </div>;
-        })}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {detailLoading && (
+        <div className="loading-container">
+          <p>⏳ Generating your full recipe...</p>
+        </div>
+      )}
+
+      {selectedRecipe && !detailLoading && (
+        <div className="detailed-recipe">
+          <button className="btn-back" onClick={() => setSelectedRecipe(null)}>
+            Back to Results.
+          </button>
+          <h2>{selectedRecipe.title}</h2>
+          <p className="recipe-description">{selectedRecipe.description}</p>
+          <div className="recipe-info">
+            <span>⏱️ Cook: {selectedRecipe.cookingTime}</span>
+            <span>⏱️ Prep: {selectedRecipe.prepTime}</span>
+          </div>
+          <div className="recipe-sections">
+            <div className="ingredients-section">
+              <h3>🛒 Ingredients</h3>
+              <ul>
+                {selectedRecipe.ingredients?.map((ingredients, index) => {
+                  <li key={index}>{ingredients}</li>;
+                })}
+              </ul>
+            </div>
+            <div className="instructions-section">
+              <h3>🥣 Instructions</h3>
+              <ol>
+                {selectedRecipe.instructions?.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ol>
+            </div>
+          </div>
+
+          {selectedRecipe.tips?.length > 0 && (
+            <div className="tips-sections">
+              <h3>💡 Tips & tricks</h3>
+              <ul>
+                {selectedRecipe.tips.map((tip, index) => (
+                  <li key={index}>{tip}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <button
+            className="btn-save"
+            onClick={() => saveRecipe(selectedRecipe)}
+          >
+            💾 Save Recipe
+          </button>
+        </div>
+      )}
     </div>
   );
 }
