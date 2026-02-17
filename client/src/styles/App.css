@@ -140,7 +140,6 @@ input:focus {
   margin: 1rem 0;
 }
 
-/* Recipe Grid */
 .recipes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -149,6 +148,7 @@ input:focus {
 }
 
 .recipe-card {
+  cursor: pointer;
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
@@ -174,7 +174,127 @@ input:focus {
   font-size: 0.9rem;
 }
 
-/* Saved Recipes Page */
 .saved-recipes-page {
   text-align: center;
+}
+
+.detailed-recipe {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detailed-recipe h2 {
+  color: #4CAF50;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.recipe-description {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.recipe-info {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.recipe-sections {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.ingredients-section h3,
+.instructions-section h3,
+.tips-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.ingredients-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ingredients-section ul li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.instructions-section ol {
+  padding-left: 1.5rem;
+}
+
+.instructions-section ol li {
+  padding: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.tips-section {
+  background: #fff9c4;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.tips-section ul {
+  padding-left: 1.5rem;
+}
+
+.tips-section ul li {
+  padding: 0.3rem 0;
+}
+
+.btn-back {
+  background: none;
+  color: #4CAF50;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-save {
+  background-color: #4CAF50;
+  color: white;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-save:hover {
+  background-color: #45a049;
+}
+
+.click-hint {
+  color: #4CAF50;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #666;
 }
