@@ -21,6 +21,11 @@ const recipeSchema = new mongoose.Schema({
   cookingTime: String,
   prepTime: String,
   servings: Number,
+
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
 recipeSchema.index({ title: "text", ingredients: "text" });

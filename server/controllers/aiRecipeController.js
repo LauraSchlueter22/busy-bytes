@@ -136,6 +136,7 @@ export const saveRecipe = async (req, res) => {
       cookingTime: recipeData.cookingTime,
       prepTime: recipeData.prepTime,
       tips: recipeData.tips || [],
+      userId: req.user.id,
     });
 
     const savedRecipe = await newRecipe.save();
@@ -153,7 +154,9 @@ export const saveRecipe = async (req, res) => {
 
 export const getSavedRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find({}).sort({ createdAt: -1 });
+    const recipes = await Recipe.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
     res.json(recipes);
   } catch (error) {
     console.error("Error fetching saved recipes:", error);

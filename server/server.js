@@ -5,10 +5,8 @@ import express from "express";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import aiRoutes from "./routes/aiRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import mongoose from "mongoose";
-
-// I need to come back and reorganize files.
-// mainly backend files
 
 const app = express();
 const PORT = 3000;
@@ -28,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
+app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
 
 app.use((req, res) => res.status(404).send("☹️ This page does not exist"));
@@ -45,6 +43,7 @@ app.listen(PORT, () => {
   console.log(
     `🤖 Anthropic API key loaded: ${process.env.ANTHROPIC_API_KEY ? "✅" : "❌"}`,
   );
+  console.log(`🔐 JWT Secret loaded: ${process.env.JWT_SECRET ? "✅" : "❌"}`);
 });
 
 export default app;
