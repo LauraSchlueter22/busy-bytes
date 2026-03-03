@@ -6,13 +6,14 @@ import {
   getSavedRecipes,
   deleteRecipe,
 } from "../controllers/aiRecipeController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.get("/recipes", generateRecipes);
-router.get("/recipes/saved", getSavedRecipes);
 router.post("/recipe/detailed", generateFullRecipe);
-router.post("/recipe/save", saveRecipe);
-router.delete("/recipes/:id", deleteRecipe);
+router.post("/recipe/save", protect, saveRecipe);
+router.get("/recipes/saved", protect, getSavedRecipes);
+router.delete("/recipes/:id", protect, deleteRecipe);
 
 export default router;
