@@ -14,9 +14,11 @@
   "description": "A recipe app that helps busy people cook with ingredients they already have",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.1",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "html-react-parser": "^5.2.6",
+    "jsonwebtoken": "^9.0.3",
     "mongodb": "^6.18.0",
     "mongoose": "^8.16.5",
     "react": "^19.1.1",
