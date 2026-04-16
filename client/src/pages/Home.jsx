@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
   const [ingredients, setIngredients] = useState("");
@@ -7,6 +8,8 @@ function Home() {
   const [error, setError] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
+
+  const { token } = useAuth();
 
   const searchRecipes = async () => {
     if (!ingredients.trim()) {
@@ -60,10 +63,17 @@ function Home() {
   };
 
   const saveRecipe = async (recipe) => {
+    if (!token) {
+      alert("Please login to save recipes!");
+      return;
+    }
     try {
       const response = await fetch("/api/ai/recipe/save", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(recipe),
       });
       const data = await response.json();
@@ -80,7 +90,7 @@ function Home() {
 
   return (
     <div className="home-page">
-      <h1> You provide the Ingredients- We got the recipes 🍛</h1>
+      <h1> You got the ingredients. We got the recipes 🍛</h1>
       <div className="search-section">
         <input
           type="text"
@@ -140,9 +150,9 @@ function Home() {
             <div className="ingredients-section">
               <h3>🛒 Ingredients</h3>
               <ul>
-                {selectedRecipe.ingredients?.map((ingredients, index) => {
-                  <li key={index}>{ingredients}</li>;
-                })}
+                {selectedRecipe.ingredients?.map((ingredients, index) => (
+                  <li key={index}>{ingredients}</li>
+                ))}
               </ul>
             </div>
             <div className="instructions-section">
