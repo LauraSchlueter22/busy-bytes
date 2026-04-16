@@ -22,14 +22,14 @@ export const generateRecipes = async (req, res) => {
 
     const message = await getAnthropicClient().messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
+      max_tokens: 3000,
 
       messages: [
         {
           role: "user",
           content: `Given these ingredients: ${ingredients}
                 
-generate 3 different recipe ideas. For each recipe, provide:
+generate 5 different recipe ideas. For each recipe, provide:
 - title (string)
 - description (brief, 1-2 sentences)
 - cookingTime (e.g., "30 minutes")

@@ -90,97 +90,119 @@ function Home() {
 
   return (
     <div className="home-page">
-      <h1> You got the ingredients. We got the recipes 🍛</h1>
-      <div className="search-section">
-        <input
-          type="text"
-          placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
-          value={ingredients}
-          onChange={(e) => setIngredients(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && searchRecipes()}
-          className="ingredient-input"
-        />
-        <button
-          onClick={searchRecipes}
-          disabled={loading}
-          className="btn-primary"
-        >
-          {loading ? "Generating..." : "Get Recipe Ideas"}
-        </button>
-      </div>
-      {error && <p className="error-message">{error}</p>}
-
-      {!selectedRecipe && (
-        <div className="recipes-grid">
-          {recipes.map((recipe, index) => (
-            <div
-              key={index}
-              className="recipe-card"
-              onClick={() => getDetailedRecipe(recipe)}
+      <div
+        className={`home-hero ${recipes.length > 0 ? "home-hero--compact" : ""}`}
+      >
+        <div className="home-hero-content">
+          <h1>
+            {" "}
+            You got the ingredients.
+            <br />
+            <em> We got the recipes</em> 🍛
+          </h1>
+          <p className="home-subtitle">Type what's in your kitchen</p>
+          <div className="search-section">
+            <input
+              type="text"
+              placeholder="Enter ingredients (e.g., chicken, rice, broccoli)"
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && searchRecipes()}
+              className="ingredient-input"
+            />
+            <button
+              onClick={searchRecipes}
+              disabled={loading}
+              className="btn-primary"
             >
-              <h3>{recipe.title}</h3>
-              <p>{recipe.description}</p>
-              <div className="recipe-meta">
-                <span>⏱️ {recipe.cookingTime}</span>
+              {loading ? "Generating..." : "Get Recipe Ideas"}
+            </button>
+          </div>
+          {error && <p className="error-message">{error}</p>}
+        </div>
+      </div>
+
+      {!selectedRecipe && recipes.length > 0 && (
+        <div className="recipes-results">
+          <p className="recipes-section-title">Here's what you can make</p>
+          <div className="recipes-grid">
+            {recipes.map((recipe, index) => (
+              <div
+                key={index}
+                className="recipe-card"
+                onClick={() => getDetailedRecipe(recipe)}
+              >
+                <h3>{recipe.title}</h3>
+                <p>{recipe.description}</p>
+                <div className="recipe-meta">
+                  <span>⏱️ {recipe.cookingTime}</span>
+                </div>
+                <p className="click-hint">Click for full recipe! </p>
               </div>
-              <p className="click-hint">Click for full recipe! </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
       {detailLoading && (
-        <div className="loading-container">
-          <p>⏳ Generating your full recipe...</p>
+        <div className="recipes-results">
+          <div className="loading-container">
+            <p>⏳ Generating your full recipe...</p>
+          </div>
         </div>
       )}
 
       {selectedRecipe && !detailLoading && (
-        <div className="detailed-recipe">
-          <button className="btn-back" onClick={() => setSelectedRecipe(null)}>
-            Back to Results.
-          </button>
-          <h2>{selectedRecipe.title}</h2>
-          <p className="recipe-description">{selectedRecipe.description}</p>
-          <div className="recipe-info">
-            <span>⏱️ Cook: {selectedRecipe.cookingTime}</span>
-            <span>⏱️ Prep: {selectedRecipe.prepTime}</span>
-          </div>
-          <div className="recipe-sections">
-            <div className="ingredients-section">
-              <h3>🛒 Ingredients</h3>
-              <ul>
-                {selectedRecipe.ingredients?.map((ingredients, index) => (
-                  <li key={index}>{ingredients}</li>
-                ))}
-              </ul>
+        <div className="recipes-results">
+          <div className="detailed-recipe">
+            <button
+              className="btn-back"
+              onClick={() => setSelectedRecipe(null)}
+            >
+              ← Back to Results
+            </button>
+            <h2>{selectedRecipe.title}</h2>
+            <p className="recipe-description">{selectedRecipe.description}</p>
+            <div className="recipe-info">
+              <span>⏱️ Cook: {selectedRecipe.cookingTime}</span>
+              <span>⏱️ Prep: {selectedRecipe.prepTime}</span>
             </div>
-            <div className="instructions-section">
-              <h3>🥣 Instructions</h3>
-              <ol>
-                {selectedRecipe.instructions?.map((step, index) => (
-                  <li key={index}>{step}</li>
-                ))}
-              </ol>
+            <div className="recipe-sections">
+              <div className="ingredients-section">
+                <h3>🛒 Ingredients</h3>
+                <ul>
+                  {selectedRecipe.ingredients?.map((ingredients, index) => (
+                    <li key={index}>{ingredients}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="instructions-section">
+                <h3>🥣 Instructions</h3>
+                <ol>
+                  {selectedRecipe.instructions?.map((step, index) => (
+                    <li key={index}>{step}</li>
+                  ))}
+                </ol>
+              </div>
             </div>
-          </div>
 
-          {selectedRecipe.tips?.length > 0 && (
-            <div className="tips-sections">
-              <h3>💡 Tips & tricks</h3>
-              <ul>
-                {selectedRecipe.tips.map((tip, index) => (
-                  <li key={index}>{tip}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <button
-            className="btn-save"
-            onClick={() => saveRecipe(selectedRecipe)}
-          >
-            💾 Save Recipe
-          </button>
+            {selectedRecipe.tips?.length > 0 && (
+              <div className="tips-sections">
+                <h3>Tips & tricks</h3>
+                <ul>
+                  {selectedRecipe.tips.map((tip, index) => (
+                    <li key={index}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <button
+              className="btn-save"
+              onClick={() => saveRecipe(selectedRecipe)}
+            >
+              💾 Save Recipe
+            </button>
+          </div>
         </div>
       )}
     </div>

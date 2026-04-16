@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       });
       const data = await response.json();
 
-      if (response.okay) {
+      if (response.ok) {
         setToken(data.token);
         setUser(data.user);
         localStorage.setItem("token", data.token);
